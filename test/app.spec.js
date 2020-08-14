@@ -63,12 +63,20 @@ describe('Bookmarks endpoints', () => {
     });
   });
 
-  describe.skip('DELETE /bookmarks/:id', () => {
-    it('should delete the correct bookmark from the store', () => {
+  describe('DELETE /bookmarks/:id', () => {
+    it('should respond with 204 if delete successful', () => {
       const lastBookmark = store.bookmarks[store.bookmarks.length -1];
       const expectedBookmarks = store.bookmarks.filter(bm => bm.id !== lastBookmark.id);
       return supertest(app)
         .delete(`/bookmarks/${lastBookmark.id}`)
+        .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+        .expect(204);
+    });
+    it.skip('should delete the correct bookmark from the store', () => {
+      const secondBookmark = store.bookmarks[1];
+      const expectedBookmarks = store.bookmarks.filter(bm => bm.id !== secondBookmark.id);
+      return supertest(app)
+        .delete(`/bookmarks/${secondBookmark.id}`)
         .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
         .expect(204)
         .then(() => {
