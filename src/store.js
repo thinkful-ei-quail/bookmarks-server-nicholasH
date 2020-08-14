@@ -1,4 +1,4 @@
-bookmarks = [
+const bookmarks = [
   {
     id: 0,
     title: 'Google',
