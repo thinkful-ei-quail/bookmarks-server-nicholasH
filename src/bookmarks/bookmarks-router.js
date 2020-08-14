@@ -49,8 +49,6 @@ bookmarksRouter
                 .send('URL must begin with http(s)://');
         }
 
-
-        
         const id = uuid();
         const bookmark = {
             id,
