@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+const bookmarks = require('./store');
+const { validate } = require('./validate');
 
 const app = express();
 
@@ -15,8 +17,10 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('Hello, world!');
+app.use(validate);
+
+app.get('/bookmarks', (req, res) => {
+    res.json(bookmarks)
 });
 
 app.use(function errorHandler(error, req, res, next) {
