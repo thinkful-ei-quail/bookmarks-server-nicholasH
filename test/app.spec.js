@@ -8,9 +8,9 @@ describe('Bookmarks endpoints', () => {
   beforeEach('copy bookmarks', () => {
     bookmarksCopy = store.bookmarks.slice();
   });
-  afterEach('restore bookmarks', () => {
-    store.bookmarks = bookmarksCopy;
-  });
+  // afterEach('restore bookmarks', () => {
+  //   store.bookmarks = bookmarksCopy;
+  // });
 
   describe('Unauthorized requests', () => {
     it('should respond with 401 Unauthorized request for GET /bookmarks', () => {
@@ -72,14 +72,14 @@ describe('Bookmarks endpoints', () => {
         .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
         .expect(204);
     });
-    it.skip('should delete the correct bookmark from the store', () => {
-      const secondBookmark = store.bookmarks[1];
-      const expectedBookmarks = store.bookmarks.filter(bm => bm.id !== secondBookmark.id);
+    it('should delete the correct bookmark from the store', () => {
+      const secondBookmark = bookmarksCopy[1];
+      const expectedBookmarks = bookmarksCopy.filter(bm => bm.id !== secondBookmark.id);
       return supertest(app)
         .delete(`/bookmarks/${secondBookmark.id}`)
         .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
         .expect(204)
-        .then(() => {
+        .then(res => {
           expect(store.bookmarks).to.eql(expectedBookmarks)
         });
     });
@@ -156,11 +156,9 @@ describe('Bookmarks endpoints', () => {
           expect(res.body.description).to.eql(newBookmark.description)
           expect(res.body.rating).to.eql(newBookmark.rating)
           expect(res.body.id).to.be.a('string')
-          expect(res.body).to.include.keys(newBookmark)
         });
     });
   });
-
   describe('GET /', () => {
     it('GET / responds with 200 containing "Hello, world!"', () => {
       return supertest(app)

@@ -62,8 +62,7 @@ bookmarksRouter
 
         logger.info(`Bookmark with id ${id} created`);
 
-        res
-            .status(201)
+        res.status(201)
             .location(`http://localhost:${PORT}/bookmarks/${id}`)
             .json(bookmark);
     });
@@ -92,7 +91,7 @@ bookmarksRouter
             return res.status(404).send('Not Found');
         }
 
-        bookmarks.splice(bookmarkIndex, 1);
+        const deleteBook = bookmarks.splice(bookmarkIndex, 1);
 
         logger.info(`Bookmark with id ${id} deleted.`)
         res
